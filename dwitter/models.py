@@ -20,8 +20,8 @@ class Profile(models.Model):
         return self.user.username
     
 #Decorator que pode ser usado no lugar de post_save.connect
-@receiver(post_save, sender=User)
-# Ao criar um usuário cria também um perfil automaticamente
+@receiver(post_save, sender=User) 
+# Ao criar um usuário cria também um perfil automaticamente  
 def create_profile(sender, instance, created, **kwargs):
     if created:
         #O user é passado como instância para o construtor de Profile (pq tem relacionamento One to One)
@@ -35,3 +35,16 @@ def create_profile(sender, instance, created, **kwargs):
 
 # Execute create_profile() every time the User model executes .save(). You do this by passing User as a keyword argument to sender.
 # post_save.connect(create_profile, sender=User)
+
+
+class Dweet(models.Model):
+    user = models.ForeignKey(User, related_name="dweets", on_delete=models.DO_NOTHING)
+    body = models.CharField(max_length=140)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return(
+            f"{self.user} "
+            f"({self.created_at:%Y-%m-%d %H:%M}) "
+            f"{self.body[:30]}..."
+        )

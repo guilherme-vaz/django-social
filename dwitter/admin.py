@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.models import User, Group
-from .models import Profile
+from .models import Profile, Dweet
 
 # Serve para adicionar o Profile dentro da View de usuário no painel de Admin
 class ProfileInline(admin.StackedInline):
@@ -13,6 +13,7 @@ class UserAdmin(admin.ModelAdmin):
 
 admin.site.unregister(User)
 admin.site.register(User, UserAdmin)
+admin.site.register(Dweet)
 admin.site.unregister(Group)
 # admin.site.register(Profile)
 
