@@ -42,7 +42,7 @@
 <div class="column is-one-third">
 
     <div class="block">
-        <a href="{% url 'profile_list'%}">
+        <a href="{% url 'dwitter:profile_list'%}">
             <button class="button is-dark is-outlined is-fullwidth">
                 All Profiles
             </button>
@@ -57,7 +57,7 @@
             <ul>
             {% for following in profile.follows.all %}
                 <li>
-                    <a href="{% url 'profile' following.id %}">
+                    <a href="{% url 'dwitter:profile' following.id %}">
                         {{ following }}
                     </a>
                 </li>
@@ -74,7 +74,7 @@
             <ul>
             {% for follower in profile.followed_by.all %}
                 <li>
-                    <a href="{% url 'profile' follower.id %}">
+                    <a href="{% url 'dwitter:profile' follower.id %}">
                         {{ follower }}
                     </a>
                 </li>

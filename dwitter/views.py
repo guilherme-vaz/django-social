@@ -2,10 +2,29 @@ from django.shortcuts import render
 
 # Create your views here.
 from django.shortcuts import render
-from .models import Profile
+from .models import Dweet, Profile
+from .forms import DweetForm
+from django.shortcuts import render, redirect
 
 def dashboard(request):
-    return render(request, 'dwitter/dashboard.html')
+    form = DweetForm(request.POST or None)
+    if request.method == 'POST':
+         if form.is_valid():
+              #Cria um dweet com as informações passadas pelo form
+              dweet = form.save(commit=False)
+              #Associa o usuário logado ao Dweet
+              dweet.user = request.user
+              #Salva o dweet
+              dweet.save()
+              return redirect("dwitter:dashboard")
+         
+    followed_dweets = Dweet.objects.filter(
+
+        user__profile__in=request.user.profile.follows.all()
+
+    ).order_by("-created_at")
+
+    return render(request, 'dwitter/dashboard.html', {"form": form, "dweets":followed_dweets})
 
 def profile_list(request):
     profiles = Profile.objects.exclude(user=request.user)
